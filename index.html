@@ -3,20 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bike Fit Quick – Starter Fit Calculator</title>
-  <meta name="description" content="Get instant bike fit starting points: saddle height, bar drop, handlebar width, frame size for road / gravel / MTB. Share results with a link." />
-  <meta property="og:title" content="Bike Fit Quick – Starter Fit Calculator" />
-  <meta property="og:description" content="Instant bike fit starting points: saddle height, bar drop, handlebar width, frame size for road / gravel / MTB." />
+  <title>Bikeable Kenya – Bike Fit Quick Calculator</title>
+  <meta name="description" content="Bikeable Kenya's instant bike fit calculator. Enter your height to get starting points for frame size, saddle height, and more." />
+  <meta property="og:title" content="Bikeable Kenya – Bike Fit Quick Calculator" />
+  <meta property="og:description" content="Instant bike fit starting points by Bikeable Kenya. Calculate with just your height or add more details." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0ea5e9" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    /* Print-friendly card */
-    @media print {
-      .no-print { display: none !important; }
-      .print-card { box-shadow: none !important; border: none !important; }
-      body { background: #fff !important; }
-    }
+    @media print { .no-print { display: none !important; } }
     .glass { backdrop-filter: blur(8px); background: rgba(255,255,255,0.65) }
     .shadow-smooth { box-shadow: 0 10px 30px rgba(0,0,0,.08); }
     .input { @apply w-full rounded-2xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400; }
@@ -31,10 +26,8 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
-          <span id="brand">Bike Fit Quick</span> <span class="text-blue-600">— Starter Fit</span>
-        </h1>
-        <p class="text-gray-600 mt-1">Fast, sensible starting points. Dial it in on the road or trail.</p>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-600">Bikeable Kenya</h1>
+        <p class="text-gray-600 mt-1">Proudly brought to you by Bikeable Kenya – Nairobi's premium bike shop.</p>
       </div>
       <div class="no-print flex items-center gap-2">
         <button id="copyLink" class="btn btn-ghost">Copy share link</button>
@@ -54,414 +47,122 @@
             <span class="tag">Road / Gravel / MTB</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <label class="flex items-center gap-2 text-sm font-medium"><input type="radio" name="units" value="cm" class="h-4 w-4" checked> Metric (cm)</label>
-            <label class="flex items-center gap-2 text-sm font-medium"><input type="radio" name="units" value="in" class="h-4 w-4"> Imperial (in)</label>
-          </div>
-
           <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-semibold mb-1">Discipline</label>
-              <select id="discipline" class="input">
-                <option value="road">Road</option>
-                <option value="gravel">Gravel</option>
-                <option value="mtb">MTB</option>
-              </select>
-            </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Rider height</label>
               <input id="height" type="number" step="0.1" placeholder="e.g. 178" class="input" />
-              <p class="text-xs text-gray-500 mt-1">In selected units.</p>
+              <p class="text-xs text-gray-500 mt-1">Required (cm).</p>
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-1">Inseam (crotch → floor)</label>
+              <label class="block text-sm font-semibold mb-1">Inseam (optional)</label>
               <input id="inseam" type="number" step="0.1" placeholder="e.g. 83" class="input" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-1">Torso length (crotch → sternal notch)</label>
+              <label class="block text-sm font-semibold mb-1">Torso (optional)</label>
               <input id="torso" type="number" step="0.1" placeholder="e.g. 60" class="input" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-1">Arm length (shoulder → wrist crease)</label>
+              <label class="block text-sm font-semibold mb-1">Arm length (optional)</label>
               <input id="arm" type="number" step="0.1" placeholder="e.g. 63" class="input" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-1">Shoulder width (acromion → acromion)</label>
+              <label class="block text-sm font-semibold mb-1">Shoulder width (optional)</label>
               <input id="shoulder" type="number" step="0.1" placeholder="e.g. 40" class="input" />
-              <p class="text-xs text-gray-500 mt-1">Optional but helps choose bar width.</p>
             </div>
           </div>
-
-          <details class="mt-4">
-            <summary class="cursor-pointer text-sm font-semibold text-gray-700">Add your current bike (optional)</summary>
-            <div class="grid md:grid-cols-2 gap-4 mt-3">
-              <div>
-                <label class="block text-sm font-semibold mb-1">Current saddle height (BB → saddle top)</label>
-                <input id="curSaddle" type="number" step="0.1" placeholder="e.g. 73.5" class="input" />
-              </div>
-              <div>
-                <label class="block text-sm font-semibold mb-1">Current bar drop (saddle → bar)</label>
-                <input id="curDrop" type="number" step="0.1" placeholder="e.g. 5" class="input" />
-              </div>
-              <div>
-                <label class="block text-sm font-semibold mb-1">Current crank length (mm)</label>
-                <input id="curCrank" type="number" step="1" placeholder="e.g. 172.5" class="input" />
-              </div>
-              <div>
-                <label class="block text-sm font-semibold mb-1">Notes</label>
-                <input id="notes" type="text" placeholder="Knee pain, numb hands, etc." class="input" />
-              </div>
-            </div>
-          </details>
 
           <div class="flex flex-wrap items-center gap-3 mt-6">
             <button id="calc" class="btn btn-primary">Calculate fit</button>
             <button id="reset" class="btn btn-ghost">Reset</button>
             <span id="msg" class="text-sm text-gray-600"></span>
           </div>
+
+          <div class="mt-6">
+            <p class="text-sm font-semibold text-gray-700">Need help measuring?</p>
+            <img src="https://i.imgur.com/1K3vHcM.png" alt="Measurement diagram" class="mt-2 rounded-xl shadow-smooth" />
+            <p class="text-xs text-gray-500 mt-1">Illustration: how to measure inseam, torso, arms, shoulders.</p>
+          </div>
         </div>
 
         <!-- Results -->
         <div>
           <div class="rounded-3xl bg-white shadow-smooth p-5">
-            <h2 class="text-xl font-extrabold mb-2">Your Starting Fit</h2>
-            <p class="text-gray-600 text-sm mb-4">Use these as a baseline, then fine‑tune by feel on a safe ride or with a pro fitter.</p>
+            <h2 class="text-xl font-extrabold mb-2">Your Bike Fit (by Bikeable Kenya)</h2>
+            <p class="text-gray-600 text-sm mb-4">We’ve estimated using your height. Add more data for finer fit.</p>
 
             <div id="results" class="space-y-4">
               <div class="border border-gray-100 rounded-2xl p-4">
                 <div class="text-xs uppercase tracking-wide text-gray-500">Frame size</div>
                 <div class="mt-1 text-lg font-bold" id="frameSize">—</div>
-                <div class="text-xs text-gray-500" id="frameNotes"></div>
               </div>
-
               <div class="border border-gray-100 rounded-2xl p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500">Saddle height (BB → saddle top)</div>
+                <div class="text-xs uppercase tracking-wide text-gray-500">Saddle height</div>
                 <div class="mt-1 text-lg font-bold" id="saddleHeight">—</div>
-                <div class="text-xs text-gray-500">LeMond method: 0.883 × inseam.</div>
               </div>
-
-              <div class="border border-gray-100 rounded-2xl p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500">Saddle setback (behind BB)</div>
-                <div class="mt-1 text-lg font-bold" id="setback">—</div>
-                <div class="text-xs text-gray-500" id="setbackNotes"></div>
-              </div>
-
-              <div class="border border-gray-100 rounded-2xl p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500">Saddle ↔︎ bar drop</div>
-                <div class="mt-1 text-lg font-bold" id="barDrop">—</div>
-                <div class="text-xs text-gray-500" id="dropNotes"></div>
-              </div>
-
               <div class="border border-gray-100 rounded-2xl p-4">
                 <div class="text-xs uppercase tracking-wide text-gray-500">Handlebar width</div>
                 <div class="mt-1 text-lg font-bold" id="barWidth">—</div>
-                <div class="text-xs text-gray-500">Match shoulder width; choose nearest standard size.</div>
-              </div>
-
-              <div class="border border-gray-100 rounded-2xl p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500">Crank length</div>
-                <div class="mt-1 text-lg font-bold" id="crankLen">—</div>
-                <div class="text-xs text-gray-500">Rule‑of‑thumb ranges by inseam. Comfort and cadence win.</div>
-              </div>
-
-              <div id="deltaWrap" class="hidden border border-green-100 rounded-2xl p-4 bg-green-50">
-                <div class="text-xs uppercase tracking-wide text-green-700">Compared to your current setup</div>
-                <div class="mt-1 text-sm text-green-800" id="deltaText"></div>
               </div>
             </div>
           </div>
 
-          <p class="text-[11px] text-gray-500 mt-3">Disclaimer: This tool offers starting points only and isn’t a medical device. If you experience pain on the bike, consult a professional bike fitter or clinician.</p>
+          <p class="text-[11px] text-gray-500 mt-3">Disclaimer: Starting point only. Visit Bikeable Kenya or a professional fitter for personalized setup.</p>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
     <footer class="mt-8 text-center text-xs text-gray-500">
-      Built for cyclists. Tip: add <code>?brand=Your+Shop</code> to the link to white‑label the header.
+      &copy; 2025 Bikeable Kenya – All rights reserved.
     </footer>
   </main>
 
   <script>
     const $ = (id) => document.getElementById(id);
 
-    const state = {
-      units: 'cm',
-      discipline: 'road',
-      height: '', inseam: '', torso: '', arm: '', shoulder: '',
-      curSaddle: '', curDrop: '', curCrank: '', notes: '',
-      brand: ''
-    };
-
-    // Helpers
-    const toCm = (val, units) => {
-      if (!val && val !== 0) return null;
-      return units === 'in' ? val * 2.54 : val;
-    };
-    const fromCm = (cm, units) => units === 'in' ? (cm / 2.54) : cm;
-    const fmt = (val, units, dp=1) => {
-      if (val === null || isNaN(val)) return '—';
-      const num = Number(val).toFixed(dp);
-      return units === 'in' ? `${num} in` : `${num} cm`;
-    };
-
-    function roundTo(val, step) {
-      return Math.round(val / step) * step;
-    }
-
-    function getUnits() {
-      const radios = document.querySelectorAll('input[name="units"]');
-      for (const r of radios) if (r.checked) return r.value;
-      return 'cm';
-    }
-
-    function readInputs() {
-      state.units = getUnits();
-      state.discipline = $('discipline').value;
-      state.height = Number(($('height').value || '').trim());
-      state.inseam = Number(($('inseam').value || '').trim());
-      state.torso = Number(($('torso').value || '').trim());
-      state.arm = Number(($('arm').value || '').trim());
-      state.shoulder = Number(($('shoulder').value || '').trim());
-      state.curSaddle = Number(($('curSaddle').value || '').trim());
-      state.curDrop = Number(($('curDrop').value || '').trim());
-      state.curCrank = Number(($('curCrank').value || '').trim());
-      state.notes = ($('notes').value || '').trim();
-    }
-
-    function validate() {
-      const req = ['height','inseam'];
-      for (const k of req) {
-        if (!state[k] || isNaN(state[k]) || state[k] <= 0) {
-          return `Please enter a valid ${k}.`;
-        }
-      }
-      if (state.inseam > state.height) return 'Inseam cannot exceed height.';
-      return '';
-    }
-
-    // Core calculations (conservative, common starting points)
-    function calcSaddleHeight(inseamCm) {
-      return 0.883 * inseamCm; // LeMond BB→saddle top
-    }
-
-    function calcFrameSize(inseamCm, d) {
-      if (d === 'road') {
-        const size = inseamCm * 0.67; // seat tube (ctc-ish) in cm
-        return { label: `${Math.round(size)} cm road frame`, notes: 'Start with manufacturer size chart too; geometry varies.' };
-      }
-      if (d === 'gravel') {
-        const size = inseamCm * 0.66;
-        return { label: `${Math.round(size)} cm gravel frame`, notes: 'Gravel fits often slightly more upright. Check brand chart.' };
-      }
-      // MTB
-      const inches = inseamCm * 0.226; // classic MTB seat tube estimate
-      let letter = 'M';
-      if (inches < 14) letter = 'XS';
-      else if (inches < 16) letter = 'S';
-      else if (inches < 18) letter = 'M';
-      else if (inches < 20) letter = 'L';
-      else letter = 'XL';
-      return { label: `${Math.round(inches)}” MTB (${letter})`, notes: 'Use reach/stack on modern MTBs; sizes vary widely.' };
-    }
-
-    function calcSetback(d) {
-      if (d === 'road') return { valCm: [5,7], notes: 'KOPS‑style start: knee over pedal spindle with cranks level often lands within this.' };
-      if (d === 'gravel') return { valCm: [6,8], notes: 'Gravel: a touch more setback for comfort/stability over long rides.' };
-      return { valCm: [2,5], notes: 'MTB: shorter setback to stay centered for technical control.' };
-    }
-
-    function calcDrop(d, heightCm) {
-      // conservative, flexibility‑friendly ranges
-      if (d === 'road') return { valCm: [2,8], notes: 'More drop = more aero. Prioritize comfort & breathing.' };
-      if (d === 'gravel') return { valCm: [0,5], notes: 'Gravel: smaller drop balances control on rough surfaces.' };
-      return { valCm: [0,3], notes: 'MTB: usually minimal drop; many run flat or slight rise.' };
-    }
-
-    function calcBarWidth(shoulderCm, d) {
-      const std = [36,38,40,42,44,46];
-      if (!shoulderCm || isNaN(shoulderCm)) {
-        // choose typical default by discipline
-        return d === 'mtb' ? '740–800 mm flat bar (width depends on trail/fit)' : '40–44 cm (center‑to‑center)';
-      }
-      if (d === 'mtb') {
-        // map shoulder width to flat bar suggestion roughly
-        const base = Math.min(Math.max(shoulderCm * 20, 720), 800); // rough mapping
-        return `${Math.round(base/10)*10} mm flat bar`;
-      }
-      // drop bars
-      let nearest = std[0];
-      let minDiff = Math.abs(std[0]-shoulderCm);
-      for (const s of std) {
-        const diff = Math.abs(s - shoulderCm);
-        if (diff < minDiff) { minDiff = diff; nearest = s; }
-      }
-      return `${nearest} cm (drop bar)`;
-    }
-
-    function calcCrankLength(inseamCm) {
-      // pragmatic ranges used by many fitters; comfort & cadence matter most
-      if (inseamCm < 75) return '165 mm (160–165 viable)';
-      if (inseamCm < 82) return '170 mm (165–170)';
-      if (inseamCm < 88) return '172.5 mm (170–172.5)';
-      return '175 mm (172.5–175)';
-    }
-
-    function showResults() {
-      const units = state.units;
-      const d = state.discipline;
-      const heightCm = toCm(state.height, units);
-      const inseamCm = toCm(state.inseam, units);
-      const shoulderCm = toCm(state.shoulder, units);
-
-      const frame = calcFrameSize(inseamCm, d);
-      $('frameSize').textContent = frame.label;
-      $('frameNotes').textContent = frame.notes;
-
-      const sh = calcSaddleHeight(inseamCm);
-      $('saddleHeight').textContent = fmt(fromCm(sh, units), units);
-
-      const sb = calcSetback(d);
-      $('setback').textContent = `${fmt(fromCm(sb.valCm[0], units), units)} – ${fmt(fromCm(sb.valCm[1], units), units)}`;
-      $('setbackNotes').textContent = sb.notes;
-
-      const drop = calcDrop(d, heightCm);
-      $('barDrop').textContent = `${fmt(fromCm(drop.valCm[0], units), units)} – ${fmt(fromCm(drop.valCm[1], units), units)}`;
-      $('dropNotes').textContent = drop.notes;
-
-      $('barWidth').textContent = calcBarWidth(shoulderCm, d);
-      $('crankLen').textContent = calcCrankLength(inseamCm);
-
-      // Comparison block
-      const deltas = [];
-      if (state.curSaddle) {
-        const curS = toCm(state.curSaddle, units);
-        const delta = fromCm(sh - curS, units);
-        if (!isNaN(delta)) deltas.push(`Saddle height: ${delta > 0 ? '+' : ''}${delta.toFixed(1)} ${units}`);
-      }
-      if (state.curDrop || state.curDrop === 0) {
-        const rangeMid = (drop.valCm[0] + drop.valCm[1]) / 2;
-        const delta = fromCm(rangeMid - toCm(state.curDrop, units), units);
-        if (!isNaN(delta)) deltas.push(`Bar drop vs mid‑range: ${delta > 0 ? '+' : ''}${delta.toFixed(1)} ${units}`);
-      }
-      if (state.curCrank) {
-        deltas.push(`Crank length suggestion: ${$('crankLen').textContent}, current ${state.curCrank} mm`);
-      }
-      if (deltas.length) {
-        $('deltaWrap').classList.remove('hidden');
-        $('deltaText').textContent = deltas.join(' • ');
-      } else {
-        $('deltaWrap').classList.add('hidden');
-        $('deltaText').textContent = '';
-      }
-    }
-
-    function updateShareLink() {
-      const params = new URLSearchParams();
-      params.set('units', state.units);
-      params.set('d', state.discipline);
-      if (state.height) params.set('h', state.height);
-      if (state.inseam) params.set('i', state.inseam);
-      if (state.torso) params.set('t', state.torso);
-      if (state.arm) params.set('a', state.arm);
-      if (state.shoulder) params.set('s', state.shoulder);
-      if (state.curSaddle) params.set('cs', state.curSaddle);
-      if (state.curDrop || state.curDrop === 0) params.set('cd', state.curDrop);
-      if (state.curCrank) params.set('cc', state.curCrank);
-      if (state.notes) params.set('n', state.notes);
-      if (state.brand) params.set('brand', state.brand);
-      const url = `${location.origin}${location.pathname}?${params.toString()}`;
-      history.replaceState({}, '', url);
-      return url;
-    }
-
-    function applyParams() {
-      const q = new URLSearchParams(location.search);
-      const brand = q.get('brand');
-      if (brand) {
-        state.brand = brand;
-        $('brand').textContent = decodeURIComponent(brand);
-        document.title = `${decodeURIComponent(brand)} – Bike Fit Quick`;
-      }
-      const units = q.get('units');
-      if (units === 'in') {
-        document.querySelector('input[name="units"][value="in"]').checked = true;
-      }
-      const map = { h:'height', i:'inseam', t:'torso', a:'arm', s:'shoulder', cs:'curSaddle', cd:'curDrop', cc:'curCrank', n:'notes' };
-      for (const [key, id] of Object.entries(map)) {
-        if (q.has(key)) { $(id).value = q.get(key); }
-      }
-      const d = q.get('d');
-      if (d) $('discipline').value = d;
-    }
-
-    function setWhatsApp(url) {
-      const lines = [
-        `📏 Bike Fit Quick – results`,
-      ];
-      const summary = [
-        `Discipline: ${$('discipline').value.toUpperCase()}`,
-        `Frame: ${$('frameSize').textContent}`,
-        `Saddle height: ${$('saddleHeight').textContent}`,
-        `Setback: ${$('setback').textContent}`,
-        `Bar drop: ${$('barDrop').textContent}`,
-        `Bar width: ${$('barWidth').textContent}`,
-        `Cranks: ${$('crankLen').textContent}`,
-      ].join('\n');
-      const text = encodeURIComponent(lines.join('\n') + '\n\n' + summary + '\n\n' + url);
-      $('whatsAppShare').href = `https://wa.me/?text=${text}`;
+    function calcFromHeight(heightCm) {
+      // fallback when only height is given
+      const frame = Math.round(heightCm * 0.65);
+      const saddle = Math.round(heightCm * 0.53);
+      const bar = heightCm < 170 ? '40 cm' : (heightCm < 185 ? '42 cm' : '44 cm');
+      return {frame, saddle, bar};
     }
 
     function calculate(e) {
       if (e) e.preventDefault();
-      readInputs();
-      const err = validate();
-      if (err) { $('msg').textContent = err; return; }
+      const h = Number(($('height').value || '').trim());
+      if (!h || isNaN(h)) { $('msg').textContent = 'Enter your height first.'; return; }
       $('msg').textContent = '';
-      showResults();
-      const url = updateShareLink();
-      setWhatsApp(url);
+      const i = Number(($('inseam').value || '').trim());
+
+      let frameSize, saddleHeight, barWidth;
+      if (!i) {
+        const basic = calcFromHeight(h);
+        frameSize = basic.frame + ' cm frame';
+        saddleHeight = basic.saddle + ' cm';
+        barWidth = basic.bar;
+      } else {
+        frameSize = Math.round(i * 0.67) + ' cm frame';
+        saddleHeight = (0.883 * i).toFixed(1) + ' cm';
+        barWidth = $('shoulder').value ? $('shoulder').value + ' cm' : '42 cm';
+      }
+      $('frameSize').textContent = frameSize;
+      $('saddleHeight').textContent = saddleHeight;
+      $('barWidth').textContent = barWidth;
     }
 
     function resetAll() {
-      document.querySelectorAll('input[type="number"], input[type="text"]').forEach(i => i.value='');
-      $('discipline').value = 'road';
-      document.querySelector('input[name="units"][value="cm"]').checked = true;
-      state.brand='';
-      $('brand').textContent='Bike Fit Quick';
-      $('msg').textContent='';
-      history.replaceState({}, '', location.pathname);
-      $('results').querySelectorAll('div[id]').forEach(el=>{ el.textContent='—'; });
-      $('frameNotes').textContent='';
-      $('setbackNotes').textContent='';
-      $('dropNotes').textContent='';
-      $('deltaWrap').classList.add('hidden');
-      $('deltaText').textContent='';
-      setWhatsApp(location.href);
+      document.querySelectorAll('input').forEach(i => i.value='');
+      $('frameSize').textContent = '—';
+      $('saddleHeight').textContent = '—';
+      $('barWidth').textContent = '—';
+      $('msg').textContent = '';
     }
 
-    function initBrandFromHash() {
-      const h = location.hash.slice(1);
-      if (h.startsWith('brand=')) {
-        const b = decodeURIComponent(h.split('=')[1]);
-        $('brand').textContent = b;
-        state.brand = b;
-      }
-    }
-
-    // Events
     window.addEventListener('DOMContentLoaded', () => {
-      applyParams();
-      initBrandFromHash();
       $('calc').addEventListener('click', calculate);
       $('reset').addEventListener('click', resetAll);
-      document.querySelectorAll('input[name="units"]').forEach(r => r.addEventListener('change', calculate));
-      $('copyLink').addEventListener('click', async () => {
-        readInputs(); const url = updateShareLink(); setWhatsApp(url);
-        try { await navigator.clipboard.writeText(url); $('msg').textContent = 'Link copied to clipboard!'; }
-        catch { $('msg').textContent = 'Copy failed – long‑press to copy the URL.'; }
-      });
     });
   </script>
 </body>
 </html>
+
